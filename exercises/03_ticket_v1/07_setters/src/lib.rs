@@ -1,4 +1,4 @@
-// TODO: Add &mut-setters to the `Ticket` struct for each of its fields.
+// Add &mut-setters to the `Ticket` struct for each of its fields.
 //   Make sure to enforce the same validation rules you have in `Ticket::new`!
 //   Even better, extract that logic and reuse it in both places. You can use
 //   private functions or private static methods for that.
@@ -11,21 +11,9 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+        Ticket::validate_title(&title);
+        Ticket::validate_description(&description);
+        Ticket::validate_status(&status);
 
         Ticket {
             title,
@@ -34,16 +22,54 @@ impl Ticket {
         }
     }
 
+    fn validate_title(title: &String) {
+        if title.is_empty() {
+            panic!("Title cannot be empty");
+        }
+        if title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes");
+        }
+    }
+
     pub fn title(&self) -> &String {
         &self.title
+    }
+
+    fn set_title(&mut self, title: String) {
+        Ticket::validate_title(&title);
+        self.title = title;
+    }
+
+    fn validate_description(description: &String) {
+        if description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+        if description.len() > 500 {
+            panic!("Description cannot be longer than 500 bytes");
+        }
     }
 
     pub fn description(&self) -> &String {
         &self.description
     }
 
-    pub fn status(&self) -> &String {
+    pub fn set_description(&mut self, description: String) {
+        Ticket::validate_description(&description);
+        self.description = description;
+    }
+
+    fn validate_status(status: &String) {
+        if status != "To-Do" && status != "In Progress" && status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
+    }
+    fn status(&self) -> &String {
         &self.status
+    }
+
+    fn set_status(&mut self, status: String) {
+        Ticket::validate_status(&status);
+        self.status = status;
     }
 }
 
