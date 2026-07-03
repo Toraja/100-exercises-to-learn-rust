@@ -1,4 +1,4 @@
-// TODO: A (derivable) trait implementation is missing for this exercise to compile successfully.
+// A (derivable) trait implementation is missing for this exercise to compile successfully.
 //   Fix it!
 //
 // # `Debug` primer
@@ -9,10 +9,18 @@
 // If the compared type doesn't implement `Debug`, it doesn't know how to represent them!
 
 #[derive(PartialEq)]
+#[cfg_attr(test, derive(Debug))]
 struct Ticket {
     title: String,
     description: String,
     status: String,
+}
+
+impl Ticket {
+    fn debug_print(&self) {
+        // This does not compile because `Debug` is derived only in `test` module
+        // println!("{:?}", self);
+    }
 }
 
 #[cfg(test)]
